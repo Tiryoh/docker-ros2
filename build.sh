@@ -13,5 +13,6 @@ docker tag ros2:x64-$TARGET $DOCKER_USERNAME/ros2:x64-$TARGET
 docker tag ros2:arm64v8-$TARGET $DOCKER_USERNAME/ros2:arm64v8-$TARGET
 if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then docker push $DOCKER_USERNAME/ros2:arm64v8-$TARGET; fi
 if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then docker push $DOCKER_USERNAME/ros2:x64-$TARGET; fi
-docker manifest create --amend tiryoh/ros2:$TARGET tiryoh/ros2:arm64v8-$TARGET tiryoh/ros2:x64-$TARGET
-if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then docker manifest push tiryoh/ros2:$TARGET; fi
+docker manifest create --amend $DOCKER_USERNAME/ros2:$TARGET $DOCKER_USERNAME/ros2:arm64v8-$TARGET $DOCKER_USERNAME/ros2:x64-$TARGET
+docker manifest annotate $DOCKER_USERNAME/ros2:$TARGET $DOCKER_USERNAME/ros2:arm64v8-$TARGET --arch arm64 
+if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then docker manifest push $DOCKER_USERNAME/ros2:$TARGET; fi
