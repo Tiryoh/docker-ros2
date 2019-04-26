@@ -1,0 +1,21 @@
+dist: trusty
+sudo: required
+language: bash
+services:
+  - docker
+before_script:
+  - [[ "$TRAVIS_BRANCH" == "master" ]] && export TARGET="latest" || export TARGET="$TRAVIS_BRANCH"
+  - sudo apt-get remove docker docker-engine docker.io
+  - sudo apt-get install -y qemu-user-static
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+  - sudo apt-get update
+  - sudo apt-get install -y docker-ce
+  - echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json
+  - sudo service docker restart
+  - mkdir ~/.docker
+  - echo '{"experimental":"enabled"}' | tee ~/.docker/config.json
+  - ls -al ~/.docker/config.json
+  - cat ~/.docker/config.json
+script:
+  - ./build.sh
