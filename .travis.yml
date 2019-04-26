@@ -1,10 +1,12 @@
-dist: trusty
 sudo: required
+
 language: bash
+
 services:
   - docker
-before_script:
-  - [[ "$TRAVIS_BRANCH" == "master" ]] && export TARGET="latest" || export TARGET="$TRAVIS_BRANCH"
+
+install:
+  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then export TARGET="latest"; else export TARGET="$TRAVIS_BRANCH"; fi
   - sudo apt-get remove docker docker-engine docker.io
   - sudo apt-get install -y qemu-user-static
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -17,5 +19,6 @@ before_script:
   - echo '{"experimental":"enabled"}' | tee ~/.docker/config.json
   - ls -al ~/.docker/config.json
   - cat ~/.docker/config.json
+
 script:
   - ./build.sh
