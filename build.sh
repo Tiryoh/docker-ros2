@@ -7,7 +7,7 @@ sudo apt-get install -y qemu-user-static
 cp /usr/bin/qemu-aarch64-static $SRC_DIR/arm64
 cd $SRC_DIR/amd64 && docker build -t ros2:x64-$TARGET .
 cd $SRC_DIR/arm64 && docker build -t ros2:arm64v8-$TARGET .
-echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+if [[ "$TRAVIS_PULL_REQUEST" == "false" ]]; then echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin; fi
 docker images
 docker tag ros2:x64-$TARGET $DOCKER_USERNAME/ros2:x64-$TARGET
 docker tag ros2:arm64v8-$TARGET $DOCKER_USERNAME/ros2:arm64v8-$TARGET

@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM arm64v8/ubuntu:18.04
 LABEL maintainer "Tiryoh <tiryoh@gmail.com>"
 COPY ./qemu-aarch64-static /usr/bin/qemu-aarch64-static
 ENV DEBIAN_FRONTEND=noninteractive
