@@ -2,6 +2,8 @@ sudo: required
 
 language: bash
 
+dist: xenial
+
 services:
   - docker
 
