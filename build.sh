@@ -10,7 +10,7 @@ cd $SRC_DIR/arm64 && docker build -t ros2:arm64v8-$TARGET .
 docker tag ros2:x64-$TARGET $DOCKER_USERNAME/ros2:x64-$TARGET
 docker tag ros2:arm64v8-$TARGET $DOCKER_USERNAME/ros2:arm64v8-$TARGET
 docker images
-if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ ! $(echo $TARGET | grep 'test') ]]; then
+if [[ "$TRAVIS_PULL_REQUEST" == "false" ]] && [[ ! $(echo $TARGET | grep -e 'test' | grep -v 'latest') ]]; then
 	echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 	docker push $DOCKER_USERNAME/ros2:arm64v8-$TARGET
 	docker push $DOCKER_USERNAME/ros2:x64-$TARGET
