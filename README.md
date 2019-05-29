@@ -37,3 +37,10 @@ docker run -it tiryoh/ros2:crystal
     * https://github.com/Tiryoh/docker_ros2/blob/bouncy/arm64/Dockerfile
 
 build and push logs are available from here: https://travis-ci.com/Tiryoh/docker_ros2/branches
+
+## LICENSE
+
+(C) 2019 Tiryoh
+
+This repository is released under the Apache License 2.0, see [LICENSE](./LICENSE).  
+Unless attributed otherwise, everything in this repository is under the Apache License 2.0.
