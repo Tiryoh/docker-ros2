@@ -14,6 +14,6 @@ ENV HOME=/home/ubuntu
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 RUN git clone https://github.com/Tiryoh/ros2_setup_scripts_ubuntu.git && \
     cd ros2_setup_scripts_ubuntu && \
-    sed -e 's/^\(CHOOSE_ROS_DISTRO=.*\)/#\1\nCHOOSE_ROS_DISTRO=crystal/g' -i run.sh && \
+    sed -e 's/^\(CHOOSE_ROS_DISTRO=.*\)/#\1\nCHOOSE_ROS_DISTRO=dashing/g' -i run.sh && \
     ./run.sh && \
     sudo rm -rf /var/lib/apt/lists/*
