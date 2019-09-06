@@ -1,5 +1,5 @@
 FROM ubuntu:18.04
-LABEL maintainer "Tiryoh <tiryoh@gmail.com>"
+LABEL maintainer="Tiryoh <tiryoh@gmail.com>"
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update -q && \
     apt-get upgrade -yq && \
@@ -12,8 +12,12 @@ USER ubuntu
 WORKDIR /home/ubuntu
 ENV HOME=/home/ubuntu
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
+ENV ROS_DISTRO crystal
 RUN git clone https://github.com/Tiryoh/ros2_setup_scripts_ubuntu.git && \
     cd ros2_setup_scripts_ubuntu && \
-    sed -e 's/^\(CHOOSE_ROS_DISTRO=.*\)/#\1\nCHOOSE_ROS_DISTRO=dashing/g' -i run.sh && \
+    sed -e 's/^\(CHOOSE_ROS_DISTRO=.*\)/#\1\nCHOOSE_ROS_DISTRO=$ROS_DISTRO/g' -i run.sh && \
     ./run.sh && \
     sudo rm -rf /var/lib/apt/lists/*
+COPY ./ros_entrypoint.sh /
+ENTRYPOINT ["/ros_entrypoint.sh"]
+CMD ["bash"]
