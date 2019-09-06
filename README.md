@@ -2,17 +2,11 @@
 
 *unofficial* ROS2 Dockerfile
 
-[![](https://img.shields.io/docker/pulls/tiryoh/ros2.svg)](https://registry.hub.docker.com/r/tiryoh/ros2)
+[![](https://img.shields.io/docker/pulls/tiryoh/ros2.svg)](https://hub.docker.com/r/tiryoh/ros2)
 
 ## Quick Start
 
 After installing docker, just run:
-
-```sh
-docker run -it tiryoh/ros2:bouncy
-```
-
-or
 
 ```sh
 docker run -it tiryoh/ros2:crystal
@@ -46,7 +40,7 @@ docker run -it tiryoh/ros2:dashing
   * [![](https://images.microbadger.com/badges/version/tiryoh/ros2:arm64v8-bouncy.svg)](https://microbadger.com/images/tiryoh/ros2:arm64v8-bouncy "Get your own version badge on microbadger.com") [![](https://images.microbadger.com/badges/image/tiryoh/ros2:arm64v8-crystal.svg)](https://microbadger.com/images/tiryoh/ros2:arm64v8-bouncy "Get your own image badge on microbadger.com")
     * https://github.com/Tiryoh/docker_ros2/blob/bouncy/arm64/Dockerfile
 
-build and push logs are available from here: https://travis-ci.com/Tiryoh/docker_ros2/branches
+build and push logs are available from here: https://travis-ci.com/Tiryoh/docker_ros2/builds
 
 ## LICENSE
 

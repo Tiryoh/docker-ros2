@@ -7,8 +7,12 @@ dist: xenial
 services:
   - docker
 
+env:
+  matrix:
+    - ROS_DISTRO=crystal
+    - ROS_DISTRO=dashing APPLY_LATEST_TAG=true
+
 install:
-  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then export TARGET="latest"; else export TARGET="$TRAVIS_BRANCH"; fi
   - sudo apt-get remove docker docker-engine docker.io
   - sudo apt-get install -y qemu-user-static
   - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -23,4 +27,4 @@ install:
   - cat ~/.docker/config.json
 
 script:
-  - ./build.sh
+  - if [[ $(git diff --name-only HEAD HEAD^ | grep -o $ROS_DISTRO) ]] || [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then ./build.sh; fi
