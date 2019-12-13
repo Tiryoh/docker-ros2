@@ -11,6 +11,7 @@ env:
   matrix:
     - ROS_DISTRO=crystal
     - ROS_DISTRO=dashing APPLY_LATEST_TAG=true
+    - ROS_DISTRO=eloquent
 
 install:
   - sudo apt-get remove docker docker-engine docker.io
