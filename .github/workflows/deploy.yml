@@ -30,7 +30,6 @@ jobs:
         ros-distro:
           - dashing
           - eloquent
-      max-parallel: 1
 
     steps:
       - uses: actions/checkout@master
@@ -132,7 +131,7 @@ jobs:
           echo "AMD64"
           LINE=$(grep -n "add amd64-${{ matrix.ros-distro }} msg after this line" ${{ matrix.ros-distro }}.md | cut -d ":" -f 1)
           head -n $LINE ${{ matrix.ros-distro }}.md > tmp.md
-          echo "* \`${DOCKER_DIGEST_SHORT}\`" | tee -a tmp.md
+          echo "* \`${DOCKER_DIGEST_AMD64_SHORT}\`" | tee -a tmp.md
           echo "    * uploaded on $(date --iso-8601="minutes")" | tee -a tmp.md
           echo "        * ${{ steps.jobs.outputs.url }}" | tee -a tmp.md
           echo "    * snapshot" | tee -a tmp.md
@@ -142,7 +141,7 @@ jobs:
           echo "ARM64"
           LINE=$(grep -n "add arm64-${{ matrix.ros-distro }} msg after this line" ${{ matrix.ros-distro }}.md | cut -d ":" -f 1)
           head -n $LINE ${{ matrix.ros-distro }}.md > tmp.md
-          echo "* \`${DOCKER_DIGEST_SHORT}\`" | tee -a tmp.md
+          echo "* \`${DOCKER_DIGEST_ARM64_SHORT}\`" | tee -a tmp.md
           echo "    * uploaded on $(date --iso-8601="minutes")" | tee -a tmp.md
           echo "        * ${{ steps.jobs.outputs.url }}" | tee -a tmp.md
           echo "    * snapshot" | tee -a tmp.md
