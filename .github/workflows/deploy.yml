@@ -111,6 +111,7 @@ jobs:
           GITHUB_API="/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs"
           curl -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" -X GET "$GITHUB_BASEURL$GITHUB_API" > log.txt
           URL=$(cat log.txt | jq ".jobs | map({ name: .name, html_url: .html_url } | select(.name == \"${CURRENT_JOB_NAME}\"))" | grep html_url | sed -E 's#.*"html_url": "(.*)".*#\1#g')
+          echo $URL
           echo ::set-output name=url::$URL
 
       - name: Update GitHub wiki
