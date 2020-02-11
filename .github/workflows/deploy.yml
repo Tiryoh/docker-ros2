@@ -103,16 +103,10 @@ jobs:
 
       - name: Get Current Job Log URL
         id: jobs
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          CURRENT_JOB_NAME: build-and-deploy (${{ matrix.ros-distro }})
-        run: |
-          GITHUB_BASEURL=https://api.github.com
-          GITHUB_API="/repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/jobs"
-          curl -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: application/json" -X GET "$GITHUB_BASEURL$GITHUB_API" > log.txt
-          URL=$(cat log.txt | jq ".jobs | map({ name: .name, html_url: .html_url } | select(.name == \"${CURRENT_JOB_NAME}\"))" | grep html_url | sed -E 's#.*"html_url": "(.*)".*#\1#g')
-          echo $URL
-          echo ::set-output name=url::$URL
+        uses: Tiryoh/gha-jobid-action@v0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          job_name: build-and-deploy (${{ matrix.ros-distro }})
 
       - name: Update GitHub wiki
         env:
@@ -134,7 +128,7 @@ jobs:
           head -n $LINE ${{ matrix.ros-distro }}.md > tmp.md
           echo "* \`${DOCKER_DIGEST_AMD64_SHORT}\`" | tee -a tmp.md
           echo "    * uploaded on $(date --iso-8601="minutes")" | tee -a tmp.md
-          echo "        * ${{ steps.jobs.outputs.url }}" | tee -a tmp.md
+          echo "        * ${{ steps.jobs.outputs.html_url }}" | tee -a tmp.md
           echo "    * snapshot" | tee -a tmp.md
           echo "        * [\`${DOCKER_SNAPSHOT_AMD64}\`](${DOCKER_SNAPSHOT_AMD64_IMAGE_HISTORY_URL})" | tee -a tmp.md
           tail -n +$(( $LINE+1 )) ${{ matrix.ros-distro }}.md >> tmp.md
@@ -144,7 +138,7 @@ jobs:
           head -n $LINE ${{ matrix.ros-distro }}.md > tmp.md
           echo "* \`${DOCKER_DIGEST_ARM64_SHORT}\`" | tee -a tmp.md
           echo "    * uploaded on $(date --iso-8601="minutes")" | tee -a tmp.md
-          echo "        * ${{ steps.jobs.outputs.url }}" | tee -a tmp.md
+          echo "        * ${{ steps.jobs.outputs.html_url }}" | tee -a tmp.md
           echo "    * snapshot" | tee -a tmp.md
           echo "        * [\`${DOCKER_SNAPSHOT_ARM64}\`](${DOCKER_SNAPSHOT_ARM64_IMAGE_HISTORY_URL})" | tee -a tmp.md
           tail -n +$(( $LINE+1 )) ${{ matrix.ros-distro }}.md >> tmp.md
