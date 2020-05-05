@@ -39,7 +39,7 @@ build and push logs are available from here: https://travis-ci.com/Tiryoh/docker
 
 ## LICENSE
 
-(C) 2019 Tiryoh
+(C) 2019-2020 Tiryoh \<tiryoh@gmail.com\>
 
 This repository is released under the Apache License 2.0, see [LICENSE](./LICENSE).  
 Unless attributed otherwise, everything in this repository is under the Apache License 2.0.
