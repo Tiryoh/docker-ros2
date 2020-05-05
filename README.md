@@ -1,7 +1,12 @@
 # docker_ros2
 
-*unofficial* ROS2 Dockerfile
+__unofficial__ ROS2 Dockerfile
 
+There are official Docker images provided by OSRF.  
+https://github.com/osrf/docker_images/blob/master/README.md#official-library
+
+![Docker Automated build](https://img.shields.io/docker/automated/tiryoh/ros2)
+[![Deploy](https://github.com/Tiryoh/docker_ros2/workflows/Deploy/badge.svg?branch=master)](https://github.com/Tiryoh/docker_ros2/actions?query=workflow%3ADeploy+branch%3Amaster)
 [![](https://img.shields.io/docker/pulls/tiryoh/ros2.svg)](https://hub.docker.com/r/tiryoh/ros2)
 
 ## Quick Start
