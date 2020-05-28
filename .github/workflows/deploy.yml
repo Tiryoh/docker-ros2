@@ -53,6 +53,7 @@ jobs:
 
       - name: Prepare for Cross-Build
         run: |
+          sudo apt-get update
           sudo apt-get install -y qemu-user-static
           cp /usr/bin/qemu-aarch64-static ubuntu/${{ steps.ubuntu.outputs.distro }}/arm64/${{ matrix.ros-distro }}/
 
