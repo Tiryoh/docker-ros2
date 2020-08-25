@@ -30,6 +30,7 @@ jobs:
         ros-distro:
           - dashing
           - eloquent
+          - foxy
 
     steps:
       - uses: actions/checkout@master
