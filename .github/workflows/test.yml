@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
+      - '.github/workflows/deploy.yml'
 
 env:
   DOCKER_USERNAME: tiryoh
