@@ -57,14 +57,14 @@ jobs:
         run: |
           TIMESTAMP=$(date '+%Y%m%dT%H%M')
           cd ubuntu/${{ steps.ubuntu.outputs.distro }}/${{ matrix.arch }}/${{ matrix.ros-distro }}
-          docker build -t $DOCKER_USERNAME/$DOCKER_IMAGENAME:arm64-${{ matrix.ros-distro }}-$TIMESTAMP .
+          docker build -t $DOCKER_USERNAME/$DOCKER_IMAGENAME:${{ matrix.arch }}-${{ matrix.ros-distro }}-$TIMESTAMP .
           echo ::set-output name=timestamp::$TIMESTAMP
 
       - name: Dump docker image
         run: |
-          docker save $DOCKER_USERNAME/$DOCKER_IMAGENAME:${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }} | gzip > ${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}.tar.gz
+          docker save $DOCKER_USERNAME/$DOCKER_IMAGENAME:${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }} | gzip > ${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}.tar.gz
 
       - uses: actions/upload-artifact@v2
         with:
           name: docker-${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}
-          path: ${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}.tar.gz
+          path: ${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}.tar.gz
