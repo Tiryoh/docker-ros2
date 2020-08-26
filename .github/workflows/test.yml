@@ -1,0 +1,71 @@
+name: Build Test
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths-ignore:
+      - 'docs/**'
+      - '**.md'
+      - '.github/workflows/deploy.yml'
+
+env:
+  DOCKER_USERNAME: tiryoh
+  DOCKER_IMAGENAME: ros2
+
+jobs:
+  skip:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "[Skip CI] ${{ contains(github.event.head_commit.message, '[skip ci]') }}"
+
+  build:
+    name: "Build and Upload"
+    if: contains(github.event.head_commit.message, '[skip ci]') == false
+    continue-on-error: true
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+        ros-distro: [dashing, eloquent]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Detect Ubuntu Distro
+        id: ubuntu
+        run: |
+          if [[ "${{ matrix.ros-distro }}" == "dashing" ]] || [[ "${{ matrix.ros-distro }}" == "eloquent" ]] ; then
+            DISTRO=bionic
+          elif [[ "${{ matrix.ros-distro }}" == "foxy" ]]; then
+            DISTRO=focal
+          fi
+          echo ::set-output name=distro::$DISTRO
+
+      - name: Prepare Docker
+        run: |
+          echo '{"experimental": true}' | sudo tee -a /etc/docker/daemon.json > /dev/null
+          mkdir ~/.docker
+          echo '{"experimental": "enabled"}' | tee -a ~/.docker/config.json > /dev/null
+          sudo service docker restart
+
+      - name: Prepare for Cross-Build
+        if: matrix.arch == 'arm64'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y qemu-user-static
+          cp /usr/bin/qemu-aarch64-static ubuntu/${{ steps.ubuntu.outputs.distro }}/arm64/${{ matrix.ros-distro }}/
+
+      - name: Build Docker Image
+        id: docker
+        run: |
+          TIMESTAMP=$(date '+%Y%m%dT%H%M')
+          cd ubuntu/${{ steps.ubuntu.outputs.distro }}/${{ matrix.arch }}/${{ matrix.ros-distro }}
+          docker build -t $DOCKER_USERNAME/$DOCKER_IMAGENAME:${{ matrix.arch }}-${{ matrix.ros-distro }}-$TIMESTAMP .
+          echo ::set-output name=timestamp::$TIMESTAMP
+
+      - name: Dump docker image
+        run: |
+          docker save $DOCKER_USERNAME/$DOCKER_IMAGENAME:${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }} | gzip > ${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}.tar.gz
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: docker-${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}
+          path: ${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}.tar.gz
