@@ -39,13 +39,6 @@ jobs:
           fi
           echo ::set-output name=distro::$DISTRO
 
-      - name: Prepare Docker
-        run: |
-          echo '{"experimental": true}' | sudo tee -a /etc/docker/daemon.json > /dev/null
-          mkdir ~/.docker
-          echo '{"experimental": "enabled"}' | tee -a ~/.docker/config.json > /dev/null
-          sudo service docker restart
-
       - name: Prepare for Cross-Build
         if: matrix.arch == 'arm64'
         run: |
