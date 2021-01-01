@@ -44,6 +44,12 @@ jobs:
           fi
           echo ::set-output name=distro::$DISTRO
 
+      - name: Prepare Docker
+        run: |	
+          mkdir ~/.docker	
+          echo '{"experimental": "enabled"}' | tee -a ~/.docker/config.json > /dev/null	
+          sudo service docker restart
+
       - name: Prepare for Cross-Build
         run: |
           sudo apt-get update
