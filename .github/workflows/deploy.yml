@@ -30,7 +30,6 @@ jobs:
       matrix:
         ros-distro:
           - dashing
-          - eloquent
 
     steps:
       - uses: actions/checkout@v2
