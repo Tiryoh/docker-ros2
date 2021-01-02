@@ -30,7 +30,6 @@ jobs:
       matrix:
         ros-distro:
           - dashing
-          - eloquent
           - foxy
 
     steps:
@@ -47,10 +46,10 @@ jobs:
           echo ::set-output name=distro::$DISTRO
 
       - name: Prepare Docker
-        run: |
-          echo '{"experimental": true}' | sudo tee -a /etc/docker/daemon.json > /dev/null
-          mkdir ~/.docker
-          echo '{"experimental": "enabled"}' | tee -a ~/.docker/config.json > /dev/null
+        run: |	
+          mkdir -p ~/.docker	
+          grep -q '{' ~/.docker/config.json || echo '{}' | tee ~/.docker/config.json > /dev/null	
+          jq '. |= .+ {"experimental": "enabled"}' ~/.docker/config.json > ~/docker-config.json && mv ~/docker-config.json ~/.docker/config.json
           sudo service docker restart
 
       - name: Prepare for Cross-Build

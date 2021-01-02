@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         arch: [amd64, arm64]
-        ros-distro: [dashing, eloquent, foxy]
+        ros-distro: [dashing, foxy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -38,13 +38,6 @@ jobs:
             DISTRO=focal
           fi
           echo ::set-output name=distro::$DISTRO
-
-      - name: Prepare Docker
-        run: |
-          echo '{"experimental": true}' | sudo tee -a /etc/docker/daemon.json > /dev/null
-          mkdir ~/.docker
-          echo '{"experimental": "enabled"}' | tee -a ~/.docker/config.json > /dev/null
-          sudo service docker restart
 
       - name: Prepare for Cross-Build
         if: matrix.arch == 'arm64'
