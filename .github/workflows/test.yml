@@ -39,6 +39,8 @@ jobs:
           fi
           echo ::set-output name=distro::$DISTRO
 
+      - uses: docker/setup-qemu-action@v1
+
       - name: Prepare for Cross-Build
         if: matrix.arch == 'arm64'
         run: |

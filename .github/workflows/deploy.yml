@@ -51,6 +51,8 @@ jobs:
           jq '. |= .+ {"experimental": "enabled"}' ~/.docker/config.json > ~/docker-config.json && mv ~/docker-config.json ~/.docker/config.json
           sudo service docker restart
 
+      - uses: docker/setup-qemu-action@v1
+
       - name: Prepare for Cross-Build
         run: |
           sudo apt-get update
