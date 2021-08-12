@@ -17,15 +17,8 @@ env:
   GIT_CONFIG_EMAIL: tiryoh@gmail.com
 
 jobs:
-  skip:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "[Skip CI] ${{ contains(github.event.head_commit.message, '[skip ci]') }}"
-
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
-
     strategy:
       matrix:
         ros-distro:
@@ -50,6 +43,8 @@ jobs:
           grep -q '{' ~/.docker/config.json || echo '{}' | tee ~/.docker/config.json > /dev/null	
           jq '. |= .+ {"experimental": "enabled"}' ~/.docker/config.json > ~/docker-config.json && mv ~/docker-config.json ~/.docker/config.json
           sudo service docker restart
+
+      - uses: docker/setup-qemu-action@v1
 
       - name: Prepare for Cross-Build
         run: |
