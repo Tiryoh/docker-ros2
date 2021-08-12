@@ -28,8 +28,8 @@ docker run -it tiryoh/ros2:foxy
 ## Docker Tags
 
 * [`foxy`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=foxy)
-  * [`amd64-foxy`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/bionic/amd64/foxy/Dockerfile)
-  * [`arm64-foxy`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/bionic/arm64/foxy/Dockerfile)
+  * [`amd64-foxy`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/focal/amd64/foxy/Dockerfile)
+  * [`arm64-foxy`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/focal/arm64/foxy/Dockerfile)
 * [`eloquent`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=eloquent)
   * [`amd64-eloquent`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/bionic/amd64/eloquent/Dockerfile)
   * [`arm64-eloquent`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/bionic/arm64/eloquent/Dockerfile)
