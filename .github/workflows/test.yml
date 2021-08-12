@@ -18,7 +18,7 @@ jobs:
     strategy:
       matrix:
         arch: [amd64, arm64]
-        ros-distro: [dashing]
+        ros-distro: [dashing, foxy]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

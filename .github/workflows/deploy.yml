@@ -23,6 +23,7 @@ jobs:
       matrix:
         ros-distro:
           - dashing
+          - foxy
 
     steps:
       - uses: actions/checkout@v2
