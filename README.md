@@ -1,9 +1,11 @@
-# docker_ros2
+# docker-ros2
 
 __unofficial__ ROS2 Dockerfile
 
 There are official Docker images provided by OSRF.  
 https://github.com/osrf/docker_images/blob/master/README.md#official-library
+
+This image is developed to force `ubuntu` user (uid=1000, gid=1000) to run the software. If you want to run the software for other users, it is easier to use the official image.
 
 ![Docker Automated build](https://img.shields.io/docker/automated/tiryoh/ros2)
 [![Deploy](https://github.com/Tiryoh/docker_ros2/workflows/Deploy/badge.svg?branch=master)](https://github.com/Tiryoh/docker_ros2/actions?query=workflow%3ADeploy+branch%3Amaster)
