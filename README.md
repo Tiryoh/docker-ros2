@@ -22,11 +22,14 @@ docker run -it tiryoh/ros2:dashing
 or
 
 ```sh
-docker run -it tiryoh/ros2:eloquent
+docker run -it tiryoh/ros2:foxy
 ```
 
 ## Docker Tags
 
+* [`foxy`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=foxy)
+  * [`amd64-foxy`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/focal/amd64/foxy/Dockerfile)
+  * [`arm64-foxy`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/focal/arm64/foxy/Dockerfile)
 * [`eloquent`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=eloquent)
   * [`amd64-eloquent`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/bionic/amd64/eloquent/Dockerfile)
   * [`arm64-eloquent`](https://github.com/Tiryoh/docker_ros2/blob/master/ubuntu/bionic/arm64/eloquent/Dockerfile)
@@ -42,7 +45,7 @@ https://github.com/Tiryoh/docker_ros2/wiki
 
 ## LICENSE
 
-(C) 2019-2020 Tiryoh \<tiryoh@gmail.com\>
+(C) 2019-2021 Tiryoh \<tiryoh@gmail.com\>
 
 This repository is released under the Apache License 2.0, see [LICENSE](./LICENSE).  
 Unless attributed otherwise, everything in this repository is under the Apache License 2.0.
