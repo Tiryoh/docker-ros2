@@ -12,14 +12,8 @@ env:
   DOCKER_IMAGENAME: ros2
 
 jobs:
-  skip:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "[Skip CI] ${{ contains(github.event.head_commit.message, '[skip ci]') }}"
-
   build:
     name: "Build and Upload"
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
     continue-on-error: true
     strategy:
       matrix:

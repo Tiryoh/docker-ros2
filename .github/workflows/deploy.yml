@@ -17,15 +17,8 @@ env:
   GIT_CONFIG_EMAIL: tiryoh@gmail.com
 
 jobs:
-  skip:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "[Skip CI] ${{ contains(github.event.head_commit.message, '[skip ci]') }}"
-
   build-and-deploy:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.message, '[skip ci]') == false
-
     strategy:
       matrix:
         ros-distro:
