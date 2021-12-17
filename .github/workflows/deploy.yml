@@ -58,17 +58,17 @@ jobs:
           images: |
             ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGENAME }}
           tags: |
-            type=raw,value=${{ matrix.target }}
-            type=raw,value=${{ matrix.target }}-{{date 'YYYYMMDDTHHmm'}}
+            type=raw,value=${{ matrix.ros-distro }}
+            type=raw,value=${{ matrix.ros-distro }}-{{date 'YYYYMMDDTHHmm'}}
           flavor: |
-            latest=true
+            latest=${{ matrix.ros-distro == 'foxy' }}
             prefix=
             suffix=
       - name: Build and Publish
         id: docker-build
         uses: docker/build-push-action@v2
         with:
-          context: ${{ matrix.target }}
+          context: ${{ matrix.ros-distro }}
           platforms: linux/amd64, linux/arm64
           outputs: type=registry # same as --push, push: true
           tags: ${{ steps.meta.outputs.tags }}
