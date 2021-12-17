@@ -13,48 +13,93 @@ env:
 
 jobs:
   build:
-    name: "Build and Upload"
-    continue-on-error: true
+    runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch: [amd64, arm64]
-        ros-distro: [dashing, foxy]
-    runs-on: ubuntu-latest
+        ros-distro:
+          - crystal
+          - dashing
+          - eloquent
+          - foxy
+
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      - name: Detect Ubuntu Distro
-        id: ubuntu
-        run: |
-          if [[ "${{ matrix.ros-distro }}" == "dashing" ]] || [[ "${{ matrix.ros-distro }}" == "eloquent" ]] ; then
-            DISTRO=bionic
-          elif [[ "${{ matrix.ros-distro }}" == "foxy" ]]; then
-            DISTRO=focal
-          fi
-          echo ::set-output name=distro::$DISTRO
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v1
 
-      - uses: docker/setup-qemu-action@v1
+      - name: Setup Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
 
-      - name: Prepare for Cross-Build
-        if: matrix.arch == 'arm64'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y qemu-user-static
-          cp /usr/bin/qemu-aarch64-static ubuntu/${{ steps.ubuntu.outputs.distro }}/arm64/${{ matrix.ros-distro }}/
-
-      - name: Build Docker Image
-        id: docker
-        run: |
-          TIMESTAMP=$(date '+%Y%m%dT%H%M')
-          cd ubuntu/${{ steps.ubuntu.outputs.distro }}/${{ matrix.arch }}/${{ matrix.ros-distro }}
-          docker build -t $DOCKER_USERNAME/$DOCKER_IMAGENAME:${{ matrix.arch }}-${{ matrix.ros-distro }}-$TIMESTAMP .
-          echo ::set-output name=timestamp::$TIMESTAMP
-
-      - name: Dump docker image
-        run: |
-          docker save $DOCKER_USERNAME/$DOCKER_IMAGENAME:${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }} | gzip > ${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}.tar.gz
-
-      - uses: actions/upload-artifact@v2
+      - name: Cache Docker layers
+        uses: actions/cache@v2
         with:
-          name: docker-${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}
-          path: ${{ matrix.arch }}-${{ matrix.ros-distro }}-${{ steps.docker.outputs.timestamp }}.tar.gz
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Prepare Docker metadata
+        id: meta
+        uses: docker/metadata-action@v3
+        with:
+          images: |
+            ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGENAME }}
+          tags: |
+            type=raw,value=${{ matrix.ros-distro }}
+          flavor: |
+            latest=false
+            prefix=
+            suffix=
+
+      - name: Build (amd64)
+        id: docker-amd64
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.ros-distro }}
+          platforms: linux/amd64
+          # outputs: type=registry # same as --push, push: true
+          load: true
+          tags: '${{ steps.meta.outputs.tags }}-amd64'
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - name: Build (arm64)
+        id: docker-arm64
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.ros-distro }}
+          platforms: linux/arm64
+          # outputs: type=registry # same as --push, push: true
+          load: true
+          tags: '${{ steps.meta.outputs.tags }}-arm64'
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      - # Temp fix
+        # https://github.com/docker/build-push-action/issues/252
+        # https://github.com/moby/buildkit/issues/1896
+        # https://github.com/docker/build-push-action/blob/master/docs/advanced/cache.md
+        name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: '${{ steps.meta.outputs.tags }}-amd64'
+          exit-code: '0'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+          format: 'template'
+          template: '@/contrib/sarif.tpl'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: 'trivy-results.sarif'
