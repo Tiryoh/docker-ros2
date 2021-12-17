@@ -21,6 +21,7 @@ jobs:
           - dashing
           - eloquent
           - foxy
+          - galactic
 
     steps:
       - name: Checkout
