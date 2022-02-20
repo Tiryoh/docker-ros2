@@ -121,4 +121,5 @@ jobs:
           git config --local user.name "${GIT_CONFIG_USER}"
           git add ${{ matrix.ros-distro }}.md
           git commit -m "Update ${{ matrix.ros-distro }}.md"
-          git push origin master
+          git fetch origin && git merge origin/master --no-edit && git push origin master || \
+          git fetch origin && git merge origin/master --no-edit && git push origin master
