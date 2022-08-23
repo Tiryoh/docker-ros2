@@ -17,9 +17,6 @@ jobs:
     strategy:
       matrix:
         ros-distro:
-          - crystal
-          - dashing
-          - eloquent
           - foxy
           - galactic
 
