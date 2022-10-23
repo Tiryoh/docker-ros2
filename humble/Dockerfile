@@ -1,4 +1,4 @@
-FROM ubuntu:jammy-20220801 AS builder
+FROM ubuntu:jammy-20221003 AS builder
 RUN apt-get update
 RUN apt-get install -y curl
 RUN apt-get install -y --no-install-recommends gcc libc-dev
@@ -8,7 +8,7 @@ RUN chown root:root /usr/local/bin/su-exec
 RUN chmod 0755 /usr/local/bin/su-exec
 
 
-FROM ubuntu:jammy-20220801
+FROM ubuntu:jammy-20221003
 ARG TARGETPLATFORM
 LABEL maintainer="Daisuke Sato <tiryoh@gmail.com>"
 RUN apt-get update -q && \
