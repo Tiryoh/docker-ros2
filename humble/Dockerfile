@@ -9,6 +9,7 @@ RUN chmod 0755 /usr/local/bin/su-exec
 
 
 FROM ubuntu:jammy-20220801
+ARG TARGETPLATFORM
 LABEL maintainer="Daisuke Sato <tiryoh@gmail.com>"
 RUN apt-get update -q && \
     apt-get upgrade -yq && \
@@ -24,7 +25,8 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     apt-get update && \
     apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-desktop && \
     apt-get install -y --no-install-recommends python3-argcomplete python3-colcon-common-extensions python3-rosdep python3-colcon-mixin python3-vcstool && \
-    apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-gazebo-ros-pkgs ros-${ROS_DISTRO}-xacro ros-${ROS_DISTRO}-joint-state-publisher-gui && \
+    if [ ! "$TARGETPLATFORM" = "linux/arm64" ]; then apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-gazebo-ros-pkgs; fi && \
+    apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-xacro ros-${ROS_DISTRO}-joint-state-publisher-gui && \
     rm -rf /var/lib/apt/lists/*
 RUN rosdep init && \
     rosdep update
