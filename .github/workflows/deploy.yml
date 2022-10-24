@@ -27,6 +27,7 @@ jobs:
           - eloquent
           - foxy
           - galactic
+          - humble
 
     steps:
       - name: Checkout
