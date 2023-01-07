@@ -55,7 +55,7 @@ jobs:
             ${{ runner.os }}-buildx-
       - name: Prepare Docker metadata
         id: meta
-        uses: docker/metadata-action@v3
+        uses: docker/metadata-action@v4
         with:
           images: |
             ${{ env.DOCKER_USERNAME }}/${{ env.DOCKER_IMAGENAME }}
