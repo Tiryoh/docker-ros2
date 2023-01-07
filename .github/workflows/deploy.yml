@@ -68,7 +68,7 @@ jobs:
             suffix=
       - name: Build and Publish
         id: docker-build
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           context: ${{ matrix.ros-distro }}
           platforms: linux/amd64, linux/arm64
