@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
+      - 'LICENSE'
       - '.github/workflows/test.yml'
   schedule:
     - cron: "0 2 * * 0" # Weekly on Sundays at 02:00
@@ -53,6 +54,7 @@ jobs:
           key: ${{ runner.os }}-buildx-${{ github.sha }}
           restore-keys: |
             ${{ runner.os }}-buildx-
+
       - name: Prepare Docker metadata
         id: meta
         uses: docker/metadata-action@v4
@@ -63,9 +65,10 @@ jobs:
             type=raw,value=${{ matrix.ros-distro }}
             type=raw,value=${{ matrix.ros-distro }}-{{date 'YYYYMMDDTHHmm'}}
           flavor: |
-            latest=${{ matrix.ros-distro == 'foxy' }}
+            latest=${{ matrix.ros-distro == 'humble' }}
             prefix=
             suffix=
+
       - name: Build and Publish
         id: docker-build
         uses: docker/build-push-action@v2
