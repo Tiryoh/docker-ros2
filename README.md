@@ -17,7 +17,7 @@ If you want to run the software for other users, check [Usage](#usage) section.
 After installing docker, just run the followings.
 
 ```sh
-docker run -it tiryoh/ros2:dashing
+docker run -it tiryoh/ros2:humble
 ```
 
 or
@@ -31,12 +31,14 @@ docker run -it tiryoh/ros2:foxy
 * specify username, UID and GID.
 
   ```
-  $ docker run --rm -it -e USER=dev -e USER_UID=1001 -e USER_GID=1001 tiryoh/ros2:foxy
+  $ docker run --rm -it -e USER=dev -e USER_UID=1001 -e USER_GID=1001 tiryoh/ros2:humble
   ```
 
 ## Docker Tags
 
-* [`foxy`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=foxy), [`latest`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=latest)
+* [`humble`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=humble), [`latest`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=latest)
+* [`galactic`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=galactic)
+* [`foxy`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=foxy)
 * [`eloquent`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=eloquent)
 * [`dashing`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=dashing)
 * [`crystal`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=crystal)
@@ -46,9 +48,21 @@ https://github.com/Tiryoh/docker-ros2/wiki
 
 ## LICENSE
 
-```
-(C) 2019-2021 Tiryoh <tiryoh@gmail.com>
-```
-
 This repository is released under the Apache License 2.0, see [LICENSE](./LICENSE).  
 Unless attributed otherwise, everything in this repository is under the Apache License 2.0.
+
+```
+Copyright 2019-2023 Tiryoh <tiryoh@gmail.com>
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```

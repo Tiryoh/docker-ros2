@@ -5,6 +5,7 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
+      - 'LICENSE'
       - '.github/workflows/deploy.yml'
 
 env:

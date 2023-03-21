@@ -5,6 +5,9 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    labels:
+      - "Type: Dependencies"
+      - "Type: CI"
 
   - package-ecosystem: "docker"
     directory: "/foxy"
