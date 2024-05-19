@@ -13,6 +13,5 @@ updates:
     directories:
       - "/humble"
       - "/iron"
-      - "/jazzy"
     schedule:
       interval: "daily"
