@@ -24,6 +24,8 @@ jobs:
           - foxy
           - galactic
           - humble
+          - iron
+          - jazzy
 
     steps:
       - name: Checkout

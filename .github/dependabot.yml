@@ -10,11 +10,9 @@ updates:
       - "Type: CI"
 
   - package-ecosystem: "docker"
-    directory: "/foxy"
-    schedule:
-      interval: "daily"
-
-  - package-ecosystem: "docker"
-    directory: "/humble"
+    directories:
+      - "/humble"
+      - "/iron"
+      - "/jazzy"
     schedule:
       interval: "daily"
