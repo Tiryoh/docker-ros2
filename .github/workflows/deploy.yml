@@ -30,6 +30,7 @@ jobs:
           - galactic
           - humble
           - iron
+          - jazzy
 
     steps:
       - name: Checkout

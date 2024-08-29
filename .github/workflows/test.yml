@@ -25,6 +25,7 @@ jobs:
           - galactic
           - humble
           - iron
+          - jazzy
 
     steps:
       - name: Free Up GitHub Actions Ubuntu Runner Disk Space
