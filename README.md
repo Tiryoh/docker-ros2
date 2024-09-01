@@ -17,13 +17,13 @@ If you want to run the software for other users, check [Usage](#usage) section.
 After installing docker, just run the followings.
 
 ```sh
-docker run -it tiryoh/ros2:humble
+docker run -it tiryoh/ros2:jazzy
 ```
 
 or
 
 ```sh
-docker run -it tiryoh/ros2:foxy
+docker run -it tiryoh/ros2:humble
 ```
 
 ## Usage
@@ -36,7 +36,8 @@ docker run -it tiryoh/ros2:foxy
 
 ## Docker Tags
 
-* [`humble`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=humble), [`latest`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=latest)
+* [`jazzy`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=jazzy), [`latest`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=latest)
+* [`humble`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=humble)
 * [`galactic`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=galactic)
 * [`foxy`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=foxy)
 * [`eloquent`](https://hub.docker.com/r/tiryoh/ros2/tags?page=1&name=eloquent)
@@ -52,7 +53,7 @@ This repository is released under the Apache License 2.0, see [LICENSE](./LICENS
 Unless attributed otherwise, everything in this repository is under the Apache License 2.0.
 
 ```
-Copyright 2019-2023 Tiryoh <tiryoh@gmail.com>
+Copyright 2019-2024 Tiryoh <tiryoh@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

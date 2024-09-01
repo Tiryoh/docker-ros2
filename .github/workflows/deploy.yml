@@ -30,6 +30,7 @@ jobs:
           - galactic
           - humble
           - iron
+          - jazzy
 
     steps:
       - name: Checkout
@@ -66,7 +67,7 @@ jobs:
             type=raw,value=${{ matrix.ros-distro }}
             type=raw,value=${{ matrix.ros-distro }}-{{date 'YYYYMMDDTHHmm'}}
           flavor: |
-            latest=${{ matrix.ros-distro == 'humble' }}
+            latest=${{ matrix.ros-distro == 'jazzy' }}
             prefix=
             suffix=
 
