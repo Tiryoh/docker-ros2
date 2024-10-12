@@ -20,7 +20,6 @@ RUN apt-get update -q && \
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 RUN locale-gen en_US.UTF-8
 ENV ROS_DISTRO=humble
-RUN rm /etc/apt/apt.conf.d/docker-clean
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null && \
     apt-get update && \
@@ -31,6 +30,10 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     rm -rf /var/lib/apt/lists/*
 RUN rosdep init && \
     rosdep update
+# enable bash completion
+# https://github.com/Tiryoh/docker-ros2-desktop-vnc/pull/79
+# https://github.com/Tiryoh/docker-ros2-desktop-vnc/pull/153
+RUN rm /etc/apt/apt.conf.d/docker-clean
 COPY --from=builder /usr/local/bin/su-exec /sbin/
 COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
