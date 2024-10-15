@@ -28,6 +28,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     rm -rf /var/lib/apt/lists/*
 RUN rosdep init && \
     rosdep update
+RUN rm /etc/apt/apt.conf.d/docker-clean
 COPY --from=builder /usr/local/bin/su-exec /sbin/
 COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]

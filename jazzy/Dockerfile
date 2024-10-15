@@ -31,6 +31,10 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     rm -rf /var/lib/apt/lists/*
 RUN rosdep init && \
     rosdep update
+# enable bash completion
+# https://github.com/Tiryoh/docker-ros2-desktop-vnc/pull/79
+# https://github.com/Tiryoh/docker-ros2-desktop-vnc/pull/153
+RUN rm /etc/apt/apt.conf.d/docker-clean
 COPY --from=builder /usr/local/bin/su-exec /sbin/
 COPY ./ros_entrypoint.sh /
 ENTRYPOINT ["/ros_entrypoint.sh"]
