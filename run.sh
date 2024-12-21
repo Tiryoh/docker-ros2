@@ -45,7 +45,7 @@ else
                 -v /etc/localtime:/etc/localtime:ro \
 		-v /etc/timezone:/etc/timezone:ro \
 		-v "${HOME}/.local/share/fonts:/home/${USER}/.local/share/fonts" \
-                -v "${HOME}/catkin_ws/src:/ws" \
+                -v "${HOME}/ros2_ws/src:/ws" \
                 "${DOCKER_IMAGE_NAME}" \
                 "${CMD}"
 fi
