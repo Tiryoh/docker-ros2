@@ -29,7 +29,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-xacro ros-${ROS_DISTRO}-joint-state-publisher-gui && \
     rm -rf /var/lib/apt/lists/*
 RUN rosdep init && \
-    rosdep update
+    rosdep update --include-eol-distros
 # enable bash completion
 # https://github.com/Tiryoh/docker-ros2-desktop-vnc/pull/79
 # https://github.com/Tiryoh/docker-ros2-desktop-vnc/pull/153
