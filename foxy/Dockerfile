@@ -1,4 +1,4 @@
-FROM ubuntu:focal-20230308 AS builder
+FROM ubuntu:focal-20241011 AS builder
 RUN apt-get update
 RUN apt-get install -y curl
 RUN apt-get install -y --no-install-recommends gcc libc-dev
@@ -7,8 +7,19 @@ RUN gcc -Wall /usr/local/bin/su-exec.c -o/usr/local/bin/su-exec
 RUN chown root:root /usr/local/bin/su-exec
 RUN chmod 0755 /usr/local/bin/su-exec
 
+FROM ubuntu:focal-20241011 AS runner
+# install the latest intel media driver to use GPU
+# Avoid libGL error: failed to create dri screen
+# https://bugs.launchpad.net/ubuntu/+source/intel-media-driver/+bug/2004237
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:kisak/kisak-mesa && \
+    apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y libegl-mesa0 && \
+    rm -rf /var/lib/apt/lists/*
 
-FROM ubuntu:focal-20230308
+FROM runner
 LABEL maintainer="Daisuke Sato <tiryoh@gmail.com>"
 RUN apt-get update -q && \
     apt-get upgrade -yq && \
@@ -27,7 +38,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     apt-get install -y --no-install-recommends ros-${ROS_DISTRO}-gazebo-ros-pkgs ros-${ROS_DISTRO}-xacro ros-${ROS_DISTRO}-joint-state-publisher-gui && \
     rm -rf /var/lib/apt/lists/*
 RUN rosdep init && \
-    rosdep update
+    rosdep update --include-eol-distros
 RUN rm /etc/apt/apt.conf.d/docker-clean
 COPY --from=builder /usr/local/bin/su-exec /sbin/
 COPY ./ros_entrypoint.sh /
