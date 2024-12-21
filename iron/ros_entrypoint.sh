@@ -5,7 +5,6 @@ DEFAULT_USER=${DEFAULT_USER:-'ubuntu'}
 DEFAULT_USER_UID=${USER_UID:-'1000'}
 DEFAULT_USER_GID=${USER_GID:-'1000'}
 NOPASSWD=${NOPASSWD:-''} # set 'NOPASSWD:' to disable asking sudo password
-SHELL=${DEFAULT_SHELL:-$SHELL}
 
 if [[ $(id -u) -eq 0 ]]; then
 	echo "Set disable_coredump false" >> /etc/sudo.conf
@@ -22,9 +21,8 @@ fi
 if [[ $(id -u) -eq 0 ]]; then
 	EXEC="exec /sbin/su-exec ${DEFAULT_USER}"
 
-	# if the user does not exist, create user
-	if [[ $(id -u ${DEFAULT_USER} 2> /dev/null) != ${DEFAULT_USER_UID} ]]; then
-		echo creating user ${DEFAULT_USER}
+	# create_user
+	if [[ ! -e /home/${DEFAULT_USER} ]]; then
 		groupadd -g "${DEFAULT_USER_GID}" "${DEFAULT_USER}"
 		useradd --create-home --home-dir /home/${DEFAULT_USER} --uid ${DEFAULT_USER_UID} --shell /bin/bash \
 		    --gid ${DEFAULT_USER_GID} --groups sudo ${DEFAULT_USER}
@@ -46,20 +44,14 @@ if [[ $(id -u) -eq 0 ]]; then
 
 	DEFAULT_USER_UID="$(${EXEC} id -u)"
 	DEFAULT_USER_GID="$(${EXEC} id -g)"
-	HOME="/home/${DEFAULT_USER}"
 else # use existing user
 	EXEC="exec"
 	DEFAULT_USER="$(whoami)"
 	DEFAULT_USER_UID="$(id -u)"
 	DEFAULT_USER_GID="$(id -g)"
-	if [[ ! -e /home/${DEFAULT_USER}/.bashrc ]]; then
-		cp /etc/skel/.* /home/$DEFAULT_USER/
-	fi
 fi
 
 echo "Launched container with user: $DEFAULT_USER, uid: $DEFAULT_USER_UID, gid: $DEFAULT_USER_GID"
-
-cd $HOME
 
 if which "$1" > /dev/null 2>&1 ; then
 	source /opt/ros/${ROS_DISTRO}/setup.bash
@@ -67,3 +59,4 @@ if which "$1" > /dev/null 2>&1 ; then
 else
 	echo $@ | $EXEC $SHELL -li
 fi
+
