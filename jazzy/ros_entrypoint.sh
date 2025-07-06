@@ -40,8 +40,9 @@ if [[ $(id -u) -eq 0 ]]; then
 	chown -R ${DEFAULT_USER}:${DEFAULT_USER} /home/${DEFAULT_USER}
 
 	# mount develop workspace
-	if [ -e /ws ]; then
-	ln -s /ws /home/${DEFAULT_USER}/ros2_ws/src
+	if [ -e /ws ] && [ ! -d /home/${DEFAULT_USER}/ros2_ws/src ]; then
+		echo "Mounting develop workspace"
+		ln -s /ws /home/${DEFAULT_USER}/ros2_ws/src
 	fi
 
 	DEFAULT_USER_UID="$(${EXEC} id -u)"
