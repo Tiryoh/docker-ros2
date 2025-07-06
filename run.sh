@@ -17,9 +17,9 @@ if docker ps -a | grep -q "${CONTAINER_NAME}"; then
     echo Found container: "${CONTAINER_NAME}"
     # 引数が何もなければshellをインタラクティブモードで起動する
     if [ "$#" == 0 ]; then
-        docker exec -it "${CONTAINER_NAME}" "${DEFAULT_SHELL}"
+        docker exec -it "${CONTAINER_NAME}" "/ros_entrypoint.sh" "${DEFAULT_SHELL}"
     else
-        docker exec -it "${CONTAINER_NAME}" "$@"
+        docker exec -it "${CONTAINER_NAME}" "/ros_entrypoint.sh" "$@"
     fi
 
 else
