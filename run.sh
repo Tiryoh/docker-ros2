@@ -14,7 +14,7 @@ CONTAINER_NAME="ros_${ROS_DISTRO}_$(crc32 <(echo "${WS_ROOT_DIR}"))"
 
 # コンテナがすでに起動しているかどうか確認
 if docker ps -a | grep -q "${CONTAINER_NAME}"; then
-    echo Found container: "${CONTAINER_NAME}"
+    echo Found container: "${CONTAINER_NAME} (running)"
     # 引数が何もなければshellをインタラクティブモードで起動する
     if [ "$#" == 0 ]; then
         docker exec -it "${CONTAINER_NAME}" "/ros_entrypoint.sh" "${DEFAULT_SHELL}"
