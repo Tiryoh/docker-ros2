@@ -5,6 +5,13 @@ ROS_DISTRO=${ROS_DISTRO:-jazzy}
 DOCKER_IMAGE_NAME="tiryoh/ros2:${ROS_DISTRO}"
 DEFAULT_SHELL=bash
 DEFAULT_USER=ubuntu
+
+###### ROS 2 Workspace Directory #####
+#DEFAULT_ROS_WS="${HOME}/ros2_ws"
+# e.g.) ~/ros2_ws/rolling/src/examples
+DEFAULT_ROS_WS="${HOME}/ros2_ws/${ROS_DISTRO}"
+
+##### Default Shell #####
 DEFAULT_SHELL="/bin/bash"
 # DEFAULT_SHELL="/usr/bin/zsh"
 
@@ -24,9 +31,9 @@ if docker ps -a | grep -q "${CONTAINER_NAME}"; then
 
 else
     if [ "$#" == 0 ]; then
-        CMD="${DEFAULT_SHELL}"
+        CMD_ARGS=(${DEFAULT_SHELL})
     else
-        CMD="$@"
+        CMD_ARGS=($@)
     fi
     echo Starting container: "${CONTAINER_NAME}"
     # コンテナが起動していなければ、新規に立ち上げる
@@ -44,7 +51,7 @@ else
         -v /etc/localtime:/etc/localtime:ro \
         -v /etc/timezone:/etc/timezone:ro \
         -v "${HOME}/.local/share/fonts:/home/${USER}/.local/share/fonts" \
-        -v "${HOME}/ros2_ws/src:/ws" \
+        -v "${DEFAULT_ROS_WS}/src:/ws" \
         "${DOCKER_IMAGE_NAME}" \
-        "${CMD}"
+        "${CMD_ARGS[@]}"
 fi
