@@ -9,6 +9,7 @@ DEFAULT_USER=ubuntu
 ###### ROS 2 Workspace Directory #####
 #DEFAULT_ROS_WS="${HOME}/ros2_ws"
 # e.g.) ~/ros2_ws/rolling/src/examples
+#       ~/ros2_ws/jazzy/src/examples
 DEFAULT_ROS_WS="${HOME}/ros2_ws/${ROS_DISTRO}"
 
 ##### Default Shell #####
@@ -31,9 +32,9 @@ if docker ps -a | grep -q "${CONTAINER_NAME}"; then
 
 else
     if [ "$#" == 0 ]; then
-        CMD_ARGS=(${DEFAULT_SHELL})
+        CMD_ARGS=("${DEFAULT_SHELL}")
     else
-        CMD_ARGS=($@)
+        CMD_ARGS=("$@")
     fi
     echo Starting container: "${CONTAINER_NAME}"
     # コンテナが起動していなければ、新規に立ち上げる
