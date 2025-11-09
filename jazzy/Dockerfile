@@ -1,4 +1,4 @@
-FROM ubuntu:noble-20250619 AS builder
+FROM ubuntu:noble-20251001 AS builder
 RUN apt-get update
 RUN apt-get install -y curl
 RUN apt-get install -y --no-install-recommends gcc libc-dev
@@ -8,7 +8,7 @@ RUN chown root:root /usr/local/bin/su-exec
 RUN chmod 0755 /usr/local/bin/su-exec
 
 
-FROM ubuntu:noble-20250619
+FROM ubuntu:noble-20251001
 ARG TARGETPLATFORM
 LABEL maintainer="Daisuke Sato <tiryoh@gmail.com>"
 # https://askubuntu.com/questions/1513927/ubuntu-24-04-docker-images-now-includes-user-ubuntu-with-uid-gid-1000
