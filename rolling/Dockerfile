@@ -17,8 +17,18 @@ RUN userdel -r ubuntu
 RUN apt-get update -q && \
     apt-get upgrade -yq && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends keyboard-configuration language-pack-en && \
+    # essential tools
     DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends wget curl git build-essential ca-certificates tzdata tmux gnupg2 \
-        vim sudo lsb-release locales bash-completion zsh iproute2 iputils-ping net-tools dnsutils && \
+        vim sudo lsb-release locales bash-completion zsh && \
+    # debugging tools
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends iproute2 iputils-ping net-tools dnsutils gdb && \
+    # for gui applications
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+        libx11-xcb1 libxcb1 libxcb-render0 libxcb-shm0 libxcb-xfixes0 libxcb-shape0 \
+        libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-util1 \
+        libxcb-xinerama0 libxcb-xkb1 libxkbcommon0 libxkbcommon-x11-0 \
+        libglu1-mesa libxi6 libsm6 libxrender1 libfontconfig1 && \
+    # clean
     rm -rf /var/lib/apt/lists/*
 ENV LANG=en_US.UTF-8 LANGUAGE=en_US:en LC_ALL=en_US.UTF-8
 RUN locale-gen en_US.UTF-8

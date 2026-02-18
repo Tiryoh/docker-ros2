@@ -28,13 +28,17 @@ if [[ $(id -u) -eq 0 ]]; then
 		groupadd -g "${DEFAULT_USER_GID}" "${DEFAULT_USER}"
 		useradd --create-home --home-dir /home/${DEFAULT_USER} --uid ${DEFAULT_USER_UID} --shell /bin/bash \
 		    --gid ${DEFAULT_USER_GID} --groups sudo ${DEFAULT_USER}
+		# if failed to copy skel files, copy them manually
+		if [[ ! -e /home/${DEFAULT_USER}/.bashrc ]]; then
+			cp /etc/skel/.* /home/$DEFAULT_USER/
+		fi
 		echo "${DEFAULT_USER}:${DEFAULT_USER}" | chpasswd && \
 		echo "${DEFAULT_USER} ALL=(ALL) ${NOPASSWD}ALL" >> /etc/sudoers
 		touch /home/${DEFAULT_USER}/.sudo_as_admin_successful
 	fi
 
-	# mount develop workspace
-	if [ -e /ws ]; then
+	# mount develop workspace if exists
+	if [ -e /ws ] && [ ! -L /home/${DEFAULT_USER}/ros2_ws/src ]; then
 		mkdir -p /home/${DEFAULT_USER}/ros2_ws
 		ln -s /ws /home/${DEFAULT_USER}/ros2_ws/src
 	else
@@ -62,9 +66,23 @@ echo "Launched container with user: $DEFAULT_USER, uid: $DEFAULT_USER_UID, gid: 
 
 cd $HOME
 
-if which "$1" > /dev/null 2>&1 ; then
-	source /opt/ros/${ROS_DISTRO}/setup.bash
+# Source the ROS environment so ROS commands (eg. `ros2`) are available on PATH
+source /opt/ros/${ROS_DISTRO}/setup.bash
+
+# If an argument was provided and the first argument is an executable on PATH,
+# run it directly (preserve argument boundaries using "$@").
+# If arguments were provided but the first one is not an executable, pass the
+# whole command as a single string to a login interactive shell with -c.
+# If no arguments were provided, start an interactive login shell.
+if [ $# -gt 0 ] && command -v "$1" > /dev/null 2>&1 ; then
+	# Execute the provided command with its arguments
 	$EXEC "$@"
+elif [ $# -gt 0 ]; then
+	# Fallback: run the joined arguments as a single command string in a
+	# login interactive shell. This preserves the expected behavior when the
+	# caller passed something that isn't a direct executable in PATH.
+	$EXEC "$SHELL" -lic "$*"
 else
-	echo $@ | $EXEC $SHELL -li
+	# No arguments: open an interactive login shell
+	$EXEC "$SHELL" -li
 fi
